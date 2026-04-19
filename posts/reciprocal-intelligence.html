@@ -1074,6 +1074,7 @@ P(C) = C × T / (α × E<sub>cap</sub>)
                                 {x: '2029.5', y: 81920000000},
                                 {x: '2030', y: 163840000000}
                             ],
+                            yAxisID: 'y1',
                             borderColor: '#d97706',
                             backgroundColor: 'rgba(217, 119, 6, 0.1)',
                             borderWidth: 2.5,
@@ -1103,6 +1104,7 @@ P(C) = C × T / (α × E<sub>cap</sub>)
                                 {x: '2029.5', y: 9685},
                                 {x: '2030', y: 6779}
                             ],
+                            yAxisID: 'y2',
                             borderColor: '#1a5f9f',
                             backgroundColor: 'rgba(26, 95, 159, 0.1)',
                             borderWidth: 2.5,
@@ -1173,17 +1175,18 @@ P(C) = C × T / (α × E<sub>cap</sub>)
                             min: 2022.5,
                             max: 2030.5
                         },
-                        y: {
+                        y1: {
                             type: 'logarithmic',
+                            position: 'left',
                             title: {
                                 display: true,
-                                text: 'Tokens/Day or Parameters (Log Scale)',
-                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 12, weight: 'bold'},
-                                color: '#333'
+                                text: 'Token Consumption (T) - Tokens/Day',
+                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 11, weight: 'bold'},
+                                color: '#d97706'
                             },
                             ticks: {
                                 font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 10},
-                                color: '#666',
+                                color: '#d97706',
                                 callback: function(value) {
                                     if (value >= 1e9) {
                                         return (value / 1e9).toFixed(0) + 'B';
@@ -1195,8 +1198,32 @@ P(C) = C × T / (α × E<sub>cap</sub>)
                                     return value.toFixed(0);
                                 }
                             },
-                            min: 1e3,
+                            min: 1e6,
                             max: 1e11
+                        },
+                        y2: {
+                            type: 'logarithmic',
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Model Parameters (P) - Parameters Required per Inference',
+                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 11, weight: 'bold'},
+                                color: '#1a5f9f'
+                            },
+                            ticks: {
+                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 10},
+                                color: '#1a5f9f',
+                                callback: function(value) {
+                                    if (value >= 1e6) {
+                                        return (value / 1e6).toFixed(1) + 'M';
+                                    } else if (value >= 1e3) {
+                                        return (value / 1e3).toFixed(0) + 'K';
+                                    }
+                                    return value.toFixed(0);
+                                }
+                            },
+                            min: 1e3,
+                            max: 1e7
                         }
                     }
                 }
