@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Reciprocal Intelligence Frontier: Energy Thermodynamics & the Nagdev Law</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -920,27 +921,8 @@ P(C) = C × T / (α × E<sub>cap</sub>)
                 <div class="chart-container">
                     <div class="chart-title">Consumption vs. Density Equilibrium (2023-2030)</div>
                     <div class="visualization">
-GLOBAL TOKEN CONSUMPTION (Log Scale, Tokens/Day)
-
-100 Billion |                                     /
-            |                              / / /
-  10 Billion|                        / / /
-            |   Equilibrium Zone  / / /
-  1 Billion |   (Sustainable)  //// / / / /
-            |              /////////  /  /  /
-100 Million |          /////   ________/ /
-            |      /////   Footprint
-            |    /////       Decline
- 10 Million |  /////      (30% per
-            | /////       doubling)
-            |/______________________|______|______|
-            2023    2024    2025    2026    2027
-
-Key Zones:
-■ Consumption Growth (Incline)
-■ Required Density (Decline)
-■ Equilibrium Zone (Sustainable Range)
-            </div>
+                        <canvas id="equilibriumChart" width="400" height="300"></canvas>
+                    </div>
                     <div class="chart-legend">
                         <div class="legend-item">
                             <div class="legend-color" style="background: #d97706;"></div>
@@ -1061,5 +1043,165 @@ Key Zones:
             </div>
         </div>
     </footer>
+
+    <script>
+        // Initialize chart when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('equilibriumChart');
+            if (!ctx) return;
+
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2023', '2023.5', '2024', '2024.5', '2025', '2025.5', '2026', '2026.5', '2027', '2027.5', '2028', '2028.5', '2029', '2029.5', '2030'],
+                    datasets: [
+                        {
+                            label: 'Token Consumption (Rising T)',
+                            data: [
+                                {x: '2023', y: 10000000},
+                                {x: '2023.5', y: 20000000},
+                                {x: '2024', y: 40000000},
+                                {x: '2024.5', y: 80000000},
+                                {x: '2025', y: 160000000},
+                                {x: '2025.5', y: 320000000},
+                                {x: '2026', y: 640000000},
+                                {x: '2026.5', y: 1280000000},
+                                {x: '2027', y: 2560000000},
+                                {x: '2027.5', y: 5120000000},
+                                {x: '2028', y: 10240000000},
+                                {x: '2028.5', y: 20480000000},
+                                {x: '2029', y: 40960000000},
+                                {x: '2029.5', y: 81920000000},
+                                {x: '2030', y: 163840000000}
+                            ],
+                            borderColor: '#d97706',
+                            backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                            borderWidth: 2.5,
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#d97706',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 1.5
+                        },
+                        {
+                            label: 'Model Footprint (Declining P)',
+                            data: [
+                                {x: '2023', y: 1000000},
+                                {x: '2023.5', y: 700000},
+                                {x: '2024', y: 490000},
+                                {x: '2024.5', y: 343000},
+                                {x: '2025', y: 240000},
+                                {x: '2025.5', y: 168000},
+                                {x: '2026', y: 117600},
+                                {x: '2026.5', y: 82320},
+                                {x: '2027', y: 57624},
+                                {x: '2027.5', y: 40337},
+                                {x: '2028', y: 28236},
+                                {x: '2028.5', y: 19765},
+                                {x: '2029', y: 13835},
+                                {x: '2029.5', y: 9685},
+                                {x: '2030', y: 6779}
+                            ],
+                            borderColor: '#1a5f9f',
+                            backgroundColor: 'rgba(26, 95, 159, 0.1)',
+                            borderWidth: 2.5,
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#1a5f9f',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 1.5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 12},
+                                color: '#333',
+                                padding: 15,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#d0d0d0',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw.y;
+                                    if (value >= 1e9) {
+                                        return context.dataset.label + ': ' + (value / 1e9).toFixed(2) + 'B';
+                                    } else if (value >= 1e6) {
+                                        return context.dataset.label + ': ' + (value / 1e6).toFixed(2) + 'M';
+                                    } else if (value >= 1e3) {
+                                        return context.dataset.label + ': ' + (value / 1e3).toFixed(2) + 'K';
+                                    }
+                                    return context.dataset.label + ': ' + value.toFixed(0);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            title: {
+                                display: true,
+                                text: 'Time Period (Year)',
+                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 12, weight: 'bold'},
+                                color: '#333'
+                            },
+                            ticks: {
+                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 10},
+                                color: '#666',
+                                callback: function(value) {
+                                    return Math.round(value * 10) / 10;
+                                }
+                            },
+                            min: 2022.5,
+                            max: 2030.5
+                        },
+                        y: {
+                            type: 'logarithmic',
+                            title: {
+                                display: true,
+                                text: 'Tokens/Day or Parameters (Log Scale)',
+                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 12, weight: 'bold'},
+                                color: '#333'
+                            },
+                            ticks: {
+                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 10},
+                                color: '#666',
+                                callback: function(value) {
+                                    if (value >= 1e9) {
+                                        return (value / 1e9).toFixed(0) + 'B';
+                                    } else if (value >= 1e6) {
+                                        return (value / 1e6).toFixed(0) + 'M';
+                                    } else if (value >= 1e3) {
+                                        return (value / 1e3).toFixed(0) + 'K';
+                                    }
+                                    return value.toFixed(0);
+                                }
+                            },
+                            min: 1e6,
+                            max: 1e11
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
