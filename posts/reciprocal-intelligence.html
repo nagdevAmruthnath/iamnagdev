@@ -889,32 +889,65 @@
 
                 <h3>Part V: The Nagdev Law of Reciprocal Model Density</h3>
 
-                <h4 class="numbered-section">Theoretical Framework</h4>
-
-                <p>The observed convergence of rising global token consumption with shrinking individual model footprints yields a new governing principle for the post-scaling era: <strong>The Nagdev Law of Reciprocal Model Density.</strong></p>
+                <h4 class="numbered-section">Statement</h4>
 
                 <div class="key-insight">
-                    <strong>Definition:</strong> In resource-constrained computational environments, the logical density of an AI system must increase as a reciprocal function of its physical footprint. For every doubling of aggregate global token consumption, the active parameter count required per inference unit must decline by at least 30 percent to maintain thermodynamic equilibrium with the energy grid.
+                    <strong>Formal Definition:</strong> In a resource-constrained computational environment, the parameter footprint per inference must decrease as a sublinear function of total ecosystem token throughput to maintain energy equilibrium. Specifically, for every doubling of global token consumption, model footprint must shrink by a constant efficiency factor, reflecting exponential gains in compression and inference optimization.
                 </div>
 
-                <h4 class="numbered-section">Mathematical Formulation</h4>
+                <h4 class="numbered-section">Core Scaling Relationship</h4>
 
-                <p>The relationship is formally expressed as:</p>
+                <p><strong>Exponential Decay Form (Doubling Rule):</strong></p>
 
                 <div class="equation-block">
-P(C) = C × T / (α × E<sub>cap</sub>)
+P(T) = P₀ · (0.7)<sup>log₂(T/T₀)</sup>
                 </div>
 
                 <div class="formula-note">
                     <strong>Variables:</strong><br>
-                    P(C) = Active Parameter Count per inference operation<br>
-                    C = Computational cost per token<br>
-                    T = Total Token Volume (aggregate ecosystem consumption)<br>
-                    α = Compression Factor (algorithmic efficiency constant)<br>
-                    E<sub>cap</sub> = Regional energy capacity ceiling
+                    P(T) = Parameter footprint per inference at token volume T<br>
+                    P₀ = Baseline parameter footprint<br>
+                    T = Total token volume<br>
+                    T₀ = Reference token volume<br>
+                    0.7 = Efficiency factor (30% reduction per doubling)
                 </div>
 
-                <p>The mathematical relationship establishes that parameter count must decline inversely with rising token consumption. As global token volume T increases, individual model parameters must exhibit exponentially increasing efficiency to remain below the thermodynamic ceiling E<sub>cap</sub>. The compression factor α represents the rate at which algorithmic innovation can offset consumption growth.</p>
+                <h4 class="numbered-section">Equivalent Power Law Form</h4>
+
+                <div class="equation-block">
+P(T) = P₀ · (T/T₀)<sup>−k</sup>
+                </div>
+
+                <div class="formula-note">
+                    <strong>Where:</strong><br>
+                    k ≈ 0.514 (derived from: 0.7 = 2<sup>−k</sup>)<br>
+                    This power law is mathematically equivalent to the exponential decay form above.
+                </div>
+
+                <h4 class="numbered-section">Energy Constraint (System Limit)</h4>
+
+                <div class="equation-block">
+P(T) · T · C ≤ E<sub>cap</sub>
+                </div>
+
+                <div class="formula-note">
+                    <strong>Variables:</strong><br>
+                    C = Computational cost per token<br>
+                    E<sub>cap</sub> = Energy capacity limit<br>
+                    <br>
+                    <strong>Rearranged Form:</strong> P(T) ≤ E<sub>cap</sub> / (C · T)<br>
+                    <strong>Interpretation:</strong> If token volume T doubles, parameter footprint P(T) must decrease proportionally or faster. This is the hard thermodynamic boundary.
+                </div>
+
+                <h4 class="numbered-section">Differential Form (Stability Condition)</h4>
+
+                <div class="equation-block">
+d(log P) / d(log T) ≤ −k
+                </div>
+
+                <div class="formula-note">
+                    <strong>Interpretation:</strong> Measures how fast efficiency improves relative to demand growth. If violated, the system risks energy imbalance and operational failure.
+                </div>
 
                 <h4 class="numbered-section">Visualization and Interpretation</h4>
 
@@ -938,6 +971,15 @@ P(C) = C × T / (α × E<sub>cap</sub>)
                         </div>
                     </div>
                 </div>
+
+                <h4 class="numbered-section">Plain-English Summary</h4>
+
+                <ul>
+                    <li><strong>Token usage grows exponentially:</strong> Global AI inference demand increases exponentially as AI becomes embedded in more workflows and devices.</li>
+                    <li><strong>Model size per inference must shrink exponentially:</strong> To avoid exceeding energy capacity, the parameter footprint per inference task must decline proportionally to consumption growth.</li>
+                    <li><strong>Efficiency must outpace demand growth:</strong> Algorithmic compression techniques (quantization, distillation, attention optimization) must improve faster than consumption grows.</li>
+                    <li><strong>Otherwise → energy consumption exceeds system capacity:</strong> If efficiency improvements lag demand growth, the system enters "Energy Default"—operational constraints, cost escalation, and service degradation become inevitable.</li>
+                </ul>
 
                 <h4 class="numbered-section">Energy Default Threshold</h4>
 
@@ -1106,9 +1148,9 @@ P(C) = C × T / (α × E<sub>cap</sub>)
                             ],
                             yAxisID: 'y2',
                             borderColor: '#1a5f9f',
-                            backgroundColor: 'rgba(26, 95, 159, 0.1)',
+                            backgroundColor: 'rgba(26, 95, 159, 0.15)',
                             borderWidth: 2.5,
-                            fill: false,
+                            fill: true,
                             tension: 0.3,
                             pointRadius: 4,
                             pointBackgroundColor: '#1a5f9f',
