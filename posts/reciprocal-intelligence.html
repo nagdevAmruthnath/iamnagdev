@@ -486,6 +486,7 @@
                 <a href="../index.html">Home</a>
                 <a href="../about.html">About</a>
                 <a href="../tags.html">Tags</a>
+                <a href="../games/index.html">Games</a>
             </nav>
         </div>
     </header>
@@ -954,7 +955,7 @@ d(log P) / d(log T) ≤ −k
                 <div class="chart-container">
                     <div class="chart-title">Consumption vs. Density Equilibrium (2023-2030)</div>
                     <div class="visualization">
-                        <canvas id="equilibriumChart" width="400" height="300"></canvas>
+                        <canvas id="nagdevChart" width="900" height="500"></canvas>
                     </div>
                     <div class="chart-legend">
                         <div class="legend-item">
@@ -1089,186 +1090,101 @@ d(log P) / d(log T) ≤ −k
     <script>
         // Initialize chart when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('equilibriumChart');
+            const ctx = document.getElementById('nagdevChart');
             if (!ctx) return;
 
-            const chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['2023', '2023.5', '2024', '2024.5', '2025', '2025.5', '2026', '2026.5', '2027', '2027.5', '2028', '2028.5', '2029', '2029.5', '2030'],
-                    datasets: [
-                        {
-                            label: 'Token Consumption (Rising T)',
-                            data: [
-                                {x: '2023', y: 10000000},
-                                {x: '2023.5', y: 20000000},
-                                {x: '2024', y: 40000000},
-                                {x: '2024.5', y: 80000000},
-                                {x: '2025', y: 160000000},
-                                {x: '2025.5', y: 320000000},
-                                {x: '2026', y: 640000000},
-                                {x: '2026.5', y: 1280000000},
-                                {x: '2027', y: 2560000000},
-                                {x: '2027.5', y: 5120000000},
-                                {x: '2028', y: 10240000000},
-                                {x: '2028.5', y: 20480000000},
-                                {x: '2029', y: 40960000000},
-                                {x: '2029.5', y: 81920000000},
-                                {x: '2030', y: 163840000000}
-                            ],
-                            yAxisID: 'y1',
-                            borderColor: '#d97706',
-                            backgroundColor: 'rgba(217, 119, 6, 0.1)',
-                            borderWidth: 2.5,
-                            fill: false,
-                            tension: 0.3,
-                            pointRadius: 4,
-                            pointBackgroundColor: '#d97706',
-                            pointBorderColor: '#fff',
-                            pointBorderWidth: 1.5
-                        },
-                        {
-                            label: 'Model Footprint (Declining P)',
-                            data: [
-                                {x: '2023', y: 1000000},
-                                {x: '2023.5', y: 700000},
-                                {x: '2024', y: 490000},
-                                {x: '2024.5', y: 343000},
-                                {x: '2025', y: 240000},
-                                {x: '2025.5', y: 168000},
-                                {x: '2026', y: 117600},
-                                {x: '2026.5', y: 82320},
-                                {x: '2027', y: 57624},
-                                {x: '2027.5', y: 40337},
-                                {x: '2028', y: 28236},
-                                {x: '2028.5', y: 19765},
-                                {x: '2029', y: 13835},
-                                {x: '2029.5', y: 9685},
-                                {x: '2030', y: 6779}
-                            ],
-                            yAxisID: 'y2',
-                            borderColor: '#1a5f9f',
-                            backgroundColor: 'rgba(26, 95, 159, 0.15)',
-                            borderWidth: 2.5,
-                            fill: true,
-                            tension: 0.3,
-                            pointRadius: 4,
-                            pointBackgroundColor: '#1a5f9f',
-                            pointBorderColor: '#fff',
-                            pointBorderWidth: 1.5
-                        }
-                    ]
+            const years = [2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030];
+
+            // PARAMETERS
+            const T0 = 1e6;
+            const P0 = 1e7;
+            const decay = 0.7;
+
+            // TOKEN GROWTH (EXPONENTIAL)
+            const tokens = years.map((_, i) => T0 * Math.pow(2, i));
+
+            // PARAMETER DECAY (EXPONENTIAL)
+            const params = tokens.map(T => {
+              const doublings = Math.log2(T / T0);
+              return P0 * Math.pow(decay, doublings);
+            });
+
+            // FORMAT
+            function formatNumber(value) {
+              if (value >= 1e9) return (value / 1e9).toFixed(1) + "B";
+              if (value >= 1e6) return (value / 1e6).toFixed(1) + "M";
+              if (value >= 1e3) return (value / 1e3).toFixed(1) + "K";
+              return value;
+            }
+
+            // CHART
+            new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: years,
+                datasets: [
+                  {
+                    label: 'Token Consumption (T)',
+                    data: tokens,
+                    borderColor: '#f59e0b',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    yAxisID: 'y'
+                  },
+                  {
+                    label: 'Model Footprint (P)',
+                    data: params,
+                    borderColor: '#2563eb',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    yAxisID: 'y1'
+                  }
+                ]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: 'top'
+                  }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 12},
-                                color: '#333',
-                                padding: 15,
-                                usePointStyle: true
-                            }
-                        },
-                        tooltip: {
-                            enabled: true,
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            borderColor: '#d0d0d0',
-                            borderWidth: 1,
-                            padding: 12,
-                            displayColors: true,
-                            callbacks: {
-                                label: function(context) {
-                                    const value = context.raw.y;
-                                    if (value >= 1e9) {
-                                        return context.dataset.label + ': ' + (value / 1e9).toFixed(2) + 'B';
-                                    } else if (value >= 1e6) {
-                                        return context.dataset.label + ': ' + (value / 1e6).toFixed(2) + 'M';
-                                    } else if (value >= 1e3) {
-                                        return context.dataset.label + ': ' + (value / 1e3).toFixed(2) + 'K';
-                                    }
-                                    return context.dataset.label + ': ' + value.toFixed(0);
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            type: 'linear',
-                            position: 'bottom',
-                            title: {
-                                display: true,
-                                text: 'Time Period (Year)',
-                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 12, weight: 'bold'},
-                                color: '#333'
-                            },
-                            ticks: {
-                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 10},
-                                color: '#666',
-                                callback: function(value) {
-                                    return Math.round(value * 10) / 10;
-                                }
-                            },
-                            min: 2022.5,
-                            max: 2030.5
-                        },
-                        y1: {
-                            type: 'logarithmic',
-                            position: 'left',
-                            title: {
-                                display: true,
-                                text: 'Token Consumption (T) - Tokens/Day',
-                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 11, weight: 'bold'},
-                                color: '#d97706'
-                            },
-                            ticks: {
-                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 10},
-                                color: '#d97706',
-                                callback: function(value) {
-                                    if (value >= 1e9) {
-                                        return (value / 1e9).toFixed(0) + 'B';
-                                    } else if (value >= 1e6) {
-                                        return (value / 1e6).toFixed(0) + 'M';
-                                    } else if (value >= 1e3) {
-                                        return (value / 1e3).toFixed(0) + 'K';
-                                    }
-                                    return value.toFixed(0);
-                                }
-                            },
-                            min: 1e6,
-                            max: 1e11
-                        },
-                        y2: {
-                            type: 'logarithmic',
-                            position: 'right',
-                            title: {
-                                display: true,
-                                text: 'Model Parameters (P) - Parameters Required per Inference',
-                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 11, weight: 'bold'},
-                                color: '#1a5f9f'
-                            },
-                            ticks: {
-                                font: {family: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif", size: 10},
-                                color: '#1a5f9f',
-                                callback: function(value) {
-                                    if (value >= 1e6) {
-                                        return (value / 1e6).toFixed(1) + 'M';
-                                    } else if (value >= 1e3) {
-                                        return (value / 1e3).toFixed(0) + 'K';
-                                    }
-                                    return value.toFixed(0);
-                                }
-                            },
-                            min: 1e3,
-                            max: 1e7
-                        }
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: 'Year'
                     }
+                  },
+                  y: {
+                    type: 'linear',
+                    position: 'left',
+                    ticks: {
+                      callback: formatNumber
+                    },
+                    title: {
+                      display: true,
+                      text: 'Token Consumption (T)'
+                    }
+                  },
+                  y1: {
+                    type: 'linear',
+                    position: 'right',
+                    grid: {
+                      drawOnChartArea: false
+                    },
+                    ticks: {
+                      callback: formatNumber
+                    },
+                    title: {
+                      display: true,
+                      text: 'Model Footprint (P)'
+                    }
+                  }
                 }
+              }
             });
         });
     </script>

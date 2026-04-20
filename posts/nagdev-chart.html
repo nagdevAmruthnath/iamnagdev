@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Nagdev Law Chart</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+  body {
+    font-family: Arial;
+    background: #f5f7fa;
+    margin: 0;
+    padding: 40px;
+  }
+
+  h2 {
+    text-align: center;
+  }
+
+  .container {
+    width: 1000px;
+    height: 500px; /* 👈 FIX: force height */
+    margin: auto;
+  }
+
+  canvas {
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- header with site nav -->
+<header class="site-header">
+  <div class="header-content" style="max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
+    <div class="brand-block" style="display:flex;align-items:center;gap:12px;">
+      <div class="brand-mark" style="width:40px;height:40px;border-radius:4px;background:#2c3e50;display:grid;place-items:center;color:#fff;font-weight:700;">N</div>
+      <h1 class="brand-name" style="margin:0;color:#2c3e50;font-size:1.15rem;">I am Nagdev</h1>
+    </div>
+    <nav class="primary-nav" style="display:flex;gap:18px;">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../tags.html">Tags</a>
+      <a href="../games/index.html">Games</a>
+    </nav>
+  </div>
+</header>
+
+<h2 style="text-align:center;margin-top:26px;">Consumption vs Density Equilibrium (Nagdev Law)</h2>
+
+<div style="text-align:center;margin:18px 0;">
+  <img src="../assets/rp_fr.png" alt="Reciprocal Intelligence Frontier" style="max-width:720px;width:100%;height:auto;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.35);" />
+</div>
+
+<div class="container">
+  <canvas id="chart"></canvas>
+</div>
+
+<script>
+// YEARS
+const years = [2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030];
+
+// PARAMETERS
+const T0 = 1e6;
+const P0 = 1e7;
+const decay = 0.7;
+
+// TOKEN GROWTH (EXPONENTIAL)
+const tokens = years.map((_, i) => T0 * Math.pow(2, i));
+
+// PARAMETER DECAY (EXPONENTIAL)
+const params = tokens.map(T => {
+  const doublings = Math.log2(T / T0);
+  return P0 * Math.pow(decay, doublings);
+});
+
+// FORMAT
+function formatNumber(value) {
+  if (value >= 1e9) return (value / 1e9).toFixed(1) + "B";
+  if (value >= 1e6) return (value / 1e6).toFixed(1) + "M";
+  if (value >= 1e3) return (value / 1e3).toFixed(1) + "K";
+  return value;
+}
+
+// CHART
+new Chart(document.getElementById('chart'), {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [
+      {
+        label: 'Token Consumption (T)',
+        data: tokens,
+        borderColor: '#f59e0b',
+        borderWidth: 3,
+        tension: 0.4,
+        pointRadius: 4,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Model Footprint (P)',
+        data: params,
+        borderColor: '#2563eb',
+        borderWidth: 3,
+        tension: 0.4,
+        pointRadius: 4,
+        yAxisID: 'y1'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top'
+      }
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Year'
+        }
+      },
+      y: {
+        type: 'linear', // 👈 CHANGED
+        position: 'left',
+        ticks: {
+          callback: formatNumber
+        },
+        title: {
+          display: true,
+          text: 'Token Consumption (T)'
+        }
+      },
+      y1: {
+        type: 'linear', // 👈 CHANGED
+        position: 'right',
+        grid: {
+          drawOnChartArea: false
+        },
+        ticks: {
+          callback: formatNumber
+        },
+        title: {
+          display: true,
+          text: 'Model Footprint (P)'
+        }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

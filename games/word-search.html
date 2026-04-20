@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Daily Liquid Glass - Pro</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-hover: rgba(255, 255, 255, 0.15);
+            --accent: #00f2ff;
+            --success: #00ff88;
+            --text: #ffffff;
+        }
+
+        body {
+            margin: 0; 
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: radial-gradient(circle at top right, #1a2a6c, #b21f1f, #fdbb2d);
+            background-attachment: fixed; 
+            height: 100vh; 
+            overflow: hidden;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            color: var(--text);
+        }
+
+        /* --- Screens & UI --- */
+        .screen {
+            position: fixed; inset: 0; z-index: 100;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .glass-card {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 24px; padding: 30px; text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5); width: 90%; max-width: 450px;
+        }
+
+        .hidden { display: none !important; opacity: 0; pointer-events: none; }
+
+        /* --- Game Grid Elements --- */
+        .game-wrapper { 
+            width: 95%; max-width: 600px; height: 95vh; 
+            display: flex; flex-direction: column; gap: 10px; 
+        }
+        
+        .header-stats {
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            background: var(--glass); padding: 15px; border-radius: 15px; border: 1px solid var(--glass-border);
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+        }
+
+        #grid {
+            display: grid; gap: 4px; background: rgba(0,0,0,0.2);
+            padding: 10px; border-radius: 15px; user-select: none; touch-action: none;
+            flex-grow: 1; align-content: center; border: 1px solid var(--glass-border);
+        }
+
+        .cell {
+            aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 6px; font-weight: 800;
+            font-size: 1.5rem; 
+            cursor: crosshair;
+            transition: background 0.1s;
+        }
+
+        .cell.selecting { 
+            background: var(--accent) !important; 
+            color: #000 !important; 
+            box-shadow: 0 0 10px var(--accent) !important; 
+            border-color: transparent !important; 
+        }
+        .cell.found { background: var(--success); color: #000; border-color: transparent; }
+
+        .word-bank {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            background: var(--glass); padding: 15px; border-radius: 15px; border: 1px solid var(--glass-border);
+            max-height: 150px; overflow-y: auto;
+        }
+
+        .word-tag { 
+            font-size: 0.8rem; padding: 5px 12px; opacity: 0.8; 
+            background: rgba(0,0,0,0.3); border-radius: 20px; transition: 0.3s;
+        }
+        .word-tag.done { 
+            background: var(--success); color: #000; text-decoration: line-through; 
+            opacity: 1; font-weight: bold; box-shadow: 0 0 10px rgba(0,255,136,0.3);
+        }
+
+        /* --- Menus & Inputs --- */
+        button {
+            background: var(--accent); border: none; padding: 12px 25px;
+            border-radius: 30px; font-weight: bold; cursor: pointer; color: #000; 
+            margin-top: 15px; transition: transform 0.2s; font-size: 1rem;
+        }
+        button:hover { transform: scale(1.05); }
+
+        .btn-secondary { background: var(--glass); color: white; border: 1px solid var(--glass-border); margin-top: 0; }
+
+        select {
+            background: rgba(0,0,0,0.3); color: white; padding: 10px; width: 100%;
+            border-radius: 10px; border: 1px solid var(--accent); margin: 15px 0; font-size: 1rem;
+        }
+
+        .archive-list { 
+            margin-top: 15px; height: 180px; overflow-y: auto; 
+            display: flex; flex-direction: column; gap: 5px; 
+        }
+        .archive-item { 
+            background: rgba(0,0,0,0.2); padding: 12px; border-radius: 10px; 
+            font-size: 0.9rem; cursor: pointer; display: flex; justify-content: space-between;
+            transition: background 0.2s;
+        }
+        .archive-item:hover { background: var(--glass-hover); }
+        .archive-item.completed-item { color: var(--success); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="screen-welcome" class="screen">
+        <div class="glass-card">
+            <h1 style="margin: 0 0 10px 0; letter-spacing: 3px;">LIQUID FLOW</h1>
+            <p id="streak-info" style="color: var(--accent); font-weight: bold; margin: 0 0 20px 0;">Streak: 0 Days | Total: 0 Wins</p>
+            
+            <div style="text-align: left; font-size: 0.9rem; margin-bottom: 5px;">Select Difficulty:</div>
+            <select id="diff-select">
+                <option value="easy">Easy (10x10 | 12 Words)</option>
+                <option value="medium">Medium (12x12 | 15 Words)</option>
+                <option value="hard">Hard (14x14 | 18 Words)</option>
+                <option value="expert">Expert (16x16 | 22 Words)</option>
+            </select>
+            
+            <button id="btn-play-today" style="width: 100%;">Play Today's Puzzle</button>
+            
+            <hr style="opacity:0.2; margin: 25px 0 15px 0;">
+            
+            <div style="text-align: left; font-size: 0.9rem;">Past 30 Days:</div>
+            <div id="archive-container" class="archive-list"></div>
+        </div>
+    </div>
+
+    <div class="game-wrapper hidden" id="screen-game">
+        <div class="header-stats">
+            <div><b id="ui-mode">-</b></div>
+            <div style="text-align:center"><b id="ui-date">-</b></div>
+            <div style="text-align:right">Found: <b id="ui-found">0/0</b></div>
+        </div>
+
+        <div id="grid"></div>
+
+        <div class="word-bank" id="word-bank"></div>
+        
+        <button class="btn-secondary" onclick="goToMenu()">Back to Menu</button>
+    </div>
+
+<script>
+    // --- Configuration ---
+    const MASTER_WORDS = [
+        "AETHER", "DRAGON", "RIVER", "CRYSTAL", "LIQUID", "GALAXY", "PLASMA", "MIRROR", "NEBULA", "QUARTZ", 
+        "ORBIT", "ZENITH", "FROST", "VORTEX", "AURORA", "PRISM", "VELOCITY", "ECHO", "SHIMMER", "GLOW", 
+        "FLUX", "SILICA", "COSMOS", "BREEZE", "MIST", "WAVE", "PULSE", "STORM", "PIXEL", "VOID", 
+        "EMBER", "SOLAR", "LUNAR", "DESERT", "SPHERE", "RADAR", "SONAR", "TROPIC", "FROZEN", "COBALT", 
+        "AMBER", "SILVER", "GOLDEN", "SPRING", "SUMMER", "WINTER", "AUTUMN", "PHOENIX", "KNIGHT", "MAGIC", 
+        "SPELL", "QUEST", "FLAME", "VALLEY", "PEAK", "SHADOW", "LIGHT", "HAZARD", "DANGER", "OXYGEN",
+        "CARBON", "OASIS", "CANYON", "GLACIER", "TUNDRA", "ISLAND", "PLANET", "COMET", "METEOR", "GRAVITY"
+    ];
+
+    const LEVELS = {
+        easy: { size: 10, count: 12 },
+        medium: { size: 12, count: 15 },
+        hard: { size: 14, count: 18 },
+        expert: { size: 16, count: 22 }
+    };
+
+    // --- State Variables ---
+    let selectedDate = "";
+    let selectedDiff = "easy";
+    let foundWords = [];
+    let currentWords = [];
+    
+    // Selection state
+    let startCell = null;
+    let isMouseDown = false;
+    let activeSelection = [];
+
+    // --- Helper: Get Local Date as YYYY-MM-DD ---
+    function getLocalISODate(dateObj = new Date()) {
+        const offset = dateObj.getTimezoneOffset() * 60000;
+        return new Date(dateObj.getTime() - offset).toISOString().split('T')[0];
+    }
+
+    // --- Initialization & UI Logic ---
+    function init() {
+        const stats = loadStats();
+        const today = getLocalISODate();
+        const mainBtn = document.getElementById('btn-play-today');
+
+        // Update Main Button if Today is completed
+        if (stats.finishedDates.includes(today)) {
+            mainBtn.innerHTML = "✅ Today's Puzzle Completed";
+            mainBtn.style.background = "var(--success)";
+            mainBtn.onclick = () => alert("You've already finished today's challenge! Try a past puzzle below.");
+        } else {
+            mainBtn.innerHTML = "Play Today's Puzzle";
+            mainBtn.style.background = "var(--accent)";
+            mainBtn.onclick = () => startChallenge(today);
+        }
+
+        renderArchive();
+    }
+
+    function loadStats() {
+        const stats = JSON.parse(localStorage.getItem('liquid_word_stats') || '{"streak":0, "finishedDates":[], "total":0}');
+        document.getElementById('streak-info').innerText = `Streak: ${stats.streak} Days | Total: ${stats.total} Wins`;
+        return stats;
+    }
+
+    function renderArchive() {
+        const container = document.getElementById('archive-container');
+        container.innerHTML = ''; 
+        const stats = loadStats();
+        
+        for(let i=1; i<=30; i++) {
+            let d = new Date(); 
+            d.setDate(d.getDate() - i);
+            let ds = getLocalISODate(d);
+            let isDone = stats.finishedDates.includes(ds);
+            
+            let item = document.createElement('div');
+            item.className = `archive-item ${isDone ? 'completed-item' : ''}`;
+            item.innerHTML = `<span>${ds}</span> <span>${isDone ? '✅ Completed' : '⏳ Play'}</span>`;
+            
+            if(!isDone) {
+                item.onclick = () => startChallenge(ds);
+            } else {
+                item.style.cursor = "default";
+            }
+            
+            container.appendChild(item);
+        }
+    }
+
+    function goToMenu() {
+        document.getElementById('screen-game').classList.add('hidden');
+        document.getElementById('screen-welcome').classList.remove('hidden');
+        init();
+    }
+
+    // --- Game Logic ---
+    function startChallenge(dateStr) {
+        const stats = loadStats();
+        if (stats.finishedDates.includes(dateStr)) {
+            alert("You have already completed the challenge for " + dateStr + "!");
+            return;
+        }
+
+        selectedDate = dateStr;
+        selectedDiff = document.getElementById('diff-select').value;
+        
+        document.getElementById('screen-welcome').classList.add('hidden');
+        document.getElementById('screen-game').classList.remove('hidden');
+        
+        document.getElementById('ui-mode').innerText = selectedDiff.toUpperCase();
+        document.getElementById('ui-date').innerText = selectedDate;
+        
+        generateGame();
+    }
+
+    function generateGame() {
+        const config = LEVELS[selectedDiff];
+        const seedStr = selectedDate.replace(/-/g, '') + Object.keys(LEVELS).indexOf(selectedDiff);
+        const rng = new SeededRandom(parseInt(seedStr));
+        
+        foundWords = [];
+        currentWords = [];
+        
+        let tempBank = [...MASTER_WORDS];
+        for(let i=0; i < config.count; i++) {
+            let idx = Math.floor(rng.next() * tempBank.length);
+            currentWords.push(tempBank.splice(idx, 1)[0]);
+        }
+
+        document.getElementById('ui-found').innerText = `0/${currentWords.length}`;
+        renderGrid(config.size);
+        renderBank();
+    }
+
+    function renderGrid(size) {
+        const gridEl = document.getElementById('grid');
+        gridEl.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        gridEl.innerHTML = '';
+        
+        let matrix = Array(size).fill().map(() => Array(size).fill(''));
+        const dirs = [[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,-1],[-1,1]];
+
+        currentWords.forEach(word => {
+            let placed = false;
+            let attempts = 0;
+            while(!placed && attempts < 500) {
+                let d = dirs[Math.floor(Math.random() * dirs.length)];
+                let r = Math.floor(Math.random() * size);
+                let c = Math.floor(Math.random() * size);
+                
+                if(canPlace(matrix, word, r, c, d, size)) {
+                    for(let i=0; i<word.length; i++) {
+                        matrix[r + i*d[0]][c + i*d[1]] = word[i];
+                    }
+                    placed = true;
+                }
+                attempts++;
+            }
+        });
+
+        const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for(let r=0; r<size; r++) {
+            for(let c=0; c<size; c++) {
+                if(!matrix[r][c]) matrix[r][c] = alpha[Math.floor(Math.random()*26)];
+                
+                let cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.innerText = matrix[r][c];
+                cell.dataset.r = r;
+                cell.dataset.c = c;
+                
+                cell.onpointerdown = (e) => { 
+                    isMouseDown = true; 
+                    startSelect(cell); 
+                    cell.releasePointerCapture(e.pointerId); 
+                };
+                cell.onpointerenter = () => { handlePointerMove(cell); };
+                cell.onpointerup = endSelection;
+                
+                gridEl.appendChild(cell);
+            }
+        }
+    }
+
+    function canPlace(m, w, r, c, d, s) {
+        for(let i=0; i<w.length; i++) {
+            let nr = r + i*d[0];
+            let nc = c + i*d[1];
+            if(nr < 0 || nr >= s || nc < 0 || nc >= s || (m[nr][nc] !== '' && m[nr][nc] !== w[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function startSelect(el) {
+        document.querySelectorAll('.cell.selecting').forEach(c => c.classList.remove('selecting'));
+        startCell = el;
+        activeSelection = [el];
+        el.classList.add('selecting');
+    }
+
+    function handlePointerMove(el) {
+        if(!isMouseDown || !startCell) return;
+
+        let startR = parseInt(startCell.dataset.r);
+        let startC = parseInt(startCell.dataset.c);
+        let currR = parseInt(el.dataset.r);
+        let currC = parseInt(el.dataset.c);
+
+        let dr = currR - startR;
+        let dc = currC - startC;
+
+        let isHoriz = dr === 0;
+        let isVert  = dc === 0;
+        let isDiag  = Math.abs(dr) === Math.abs(dc);
+
+        document.querySelectorAll('.cell.selecting').forEach(c => c.classList.remove('selecting'));
+        activeSelection = [];
+
+        if (isHoriz || isVert || isDiag) {
+            let steps = Math.max(Math.abs(dr), Math.abs(dc));
+            let stepR = dr === 0 ? 0 : dr / Math.abs(dr);
+            let stepC = dc === 0 ? 0 : dc / Math.abs(dc);
+
+            for (let i = 0; i <= steps; i++) {
+                let targetR = startR + (i * stepR);
+                let targetC = startC + (i * stepC);
+                let targetEl = document.querySelector(`.cell[data-r="${targetR}"][data-c="${targetC}"]`);
+                
+                if (targetEl) {
+                    targetEl.classList.add('selecting');
+                    activeSelection.push(targetEl);
+                }
+            }
+        } else {
+            startCell.classList.add('selecting');
+            activeSelection = [startCell];
+        }
+    }
+
+    function endSelection() {
+        if(!isMouseDown) return;
+        isMouseDown = false;
+
+        let word = activeSelection.map(c => c.innerText).join('');
+        let revWord = word.split('').reverse().join('');
+        
+        let match = currentWords.find(w => w === word || w === revWord);
+
+        if (match && !foundWords.includes(match)) {
+            foundWords.push(match);
+            activeSelection.forEach(c => { 
+                c.classList.remove('selecting'); 
+                c.classList.add('found'); 
+            });
+            
+            document.getElementById('tag-' + match).classList.add('done');
+            document.getElementById('ui-found').innerText = `${foundWords.length}/${currentWords.length}`;
+            
+            checkWin();
+        } else {
+            activeSelection.forEach(c => c.classList.remove('selecting'));
+        }
+        
+        activeSelection = [];
+        startCell = null;
+    }
+
+    // --- Win State & Local Storage ---
+    function checkWin() {
+        if(foundWords.length === currentWords.length) {
+            let stats = loadStats();
+            
+            if(!stats.finishedDates.includes(selectedDate)) {
+                stats.finishedDates.push(selectedDate);
+                stats.total++;
+                
+                let yesterday = new Date(); 
+                yesterday.setDate(yesterday.getDate() - 1);
+                let yestStr = getLocalISODate(yesterday);
+                
+                if (stats.lastDate === yestStr) {
+                    stats.streak++;
+                } else if (selectedDate === getLocalISODate()) {
+                    stats.streak = 1; 
+                }
+                
+                stats.lastDate = selectedDate;
+                localStorage.setItem('liquid_word_stats', JSON.stringify(stats));
+            }
+            
+            setTimeout(() => {
+                alert("🎉 Challenge Completed! Fantastic work.");
+                goToMenu();
+            }, 500);
+        }
+    }
+
+    function renderBank() {
+        const bank = document.getElementById('word-bank');
+        bank.innerHTML = currentWords.map(w => `<div class="word-tag" id="tag-${w}">${w}</div>`).join('');
+    }
+
+    class SeededRandom {
+        constructor(seed) { this.seed = seed; }
+        next() { 
+            this.seed = (this.seed * 9301 + 49297) % 233280; 
+            return this.seed / 233280; 
+        }
+    }
+
+    init();
+    window.addEventListener('pointerup', () => { isMouseDown = false; });
+</script>
+</body>
+</html>
