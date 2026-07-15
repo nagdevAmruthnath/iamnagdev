@@ -4,49 +4,75 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Games - I am Nagdev</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="../styles.css">
   <style>
-    .games-landing { max-width: 900px; margin: 48px auto; padding: 24px; }
-    .games-list { display: grid; gap: 12px; }
-    .game-card { padding:16px; border:1px solid #e0e0e0; border-radius:8px; background:#fff; display:flex; justify-content:space-between; align-items:center; }
-    .game-card a { text-decoration:none; color:#1a5f9f; font-weight:700; }
+    .games-landing { max-width: 900px; margin: 24px auto; padding: 0 24px 24px; }
+    .games-landing h2 { font-size: 1.75rem; font-weight: 700; color: var(--color-primary); margin: 0 0 6px; letter-spacing: -0.02em; }
+    .games-landing > p { color: var(--color-text-secondary); margin: 0 0 20px; }
+    .games-list { display: grid; gap: 10px; }
+    .game-card {
+      padding: 14px 18px; border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+      background: var(--color-surface); display: flex; justify-content: space-between;
+      align-items: center; transition: all var(--transition); box-shadow: var(--shadow-sm);
+    }
+    .game-card:hover {
+      border-color: var(--color-primary-light); box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .game-card .game-title { font-size: 1rem; font-weight: 700; color: var(--color-primary); }
+    .game-card .game-desc { font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 2px; }
+    .game-card a {
+      display: inline-flex; align-items: center; gap: 6px;
+      text-decoration: none; color: var(--color-primary-light); font-weight: 600;
+      font-size: 0.9rem; transition: all var(--transition); white-space: nowrap;
+    }
+    .game-card a:hover { color: var(--color-primary); gap: 10px; }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-content" style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
+  <header class="sidebar-left">
+    <a href="../index.html" style="text-decoration:none;display:contents;">
       <div class="brand-block">
         <div class="brand-mark">N</div>
         <h1 class="brand-name">I am Nagdev</h1>
       </div>
-      <nav class="primary-nav">
-        <a href="../index.html">Home</a>
-        <a href="../about.html">About</a>
-        <a href="../tags.html">Tags</a>
-        <a class="active" href="index.html">Games</a>
-      </nav>
-    </div>
+    </a>
+    <nav class="primary-nav">
+      <a href="../index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="../about.html"><i class="fas fa-user"></i> About</a>
+      <a href="../tags.html"><i class="fas fa-tags"></i> Tags</a>
+      <a class="active" href="index.html"><i class="fas fa-gamepad"></i> Games</a>
+    </nav>
   </header>
 
   <main class="games-landing">
-    <h2>Games</h2>
+    <h2><i class="fas fa-gamepad" style="color:var(--color-primary);margin-right:8px;"></i> Games</h2>
     <p>Choose a game and have fun. New games will be added here over time.</p>
 
     <div class="games-list">
       <div class="game-card">
         <div>
-          <div style="font-size:1.05rem;font-weight:700;">Word Search</div>
-          <div style="font-size:0.9rem;color:#666;">A relaxing word search puzzle with multiple difficulty levels.</div>
+          <div class="game-title"><i class="fas fa-search" style="color:var(--color-primary);margin-right:8px;"></i> Word Search</div>
+          <div class="game-desc">A relaxing word search puzzle with multiple difficulty levels.</div>
         </div>
-        <div>
-          <a href="word-search.html">Play →</a>
-        </div>
+        <a href="word-search.html">Play &rarr;</a>
       </div>
     </div>
   </main>
 
-  <footer class="site-footer" style="margin-top:48px;">
+  <footer class="site-footer">
     <div class="footer-content">
+      <div class="footer-sections">
+        <div class="footer-section">
+          <h4><i class="fas fa-link"></i> Quick Links</h4>
+          <ul>
+            <li><a href="../index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+            <li><a href="../about.html"><i class="fas fa-chevron-right"></i> About</a></li>
+            <li><a href="../tags.html"><i class="fas fa-chevron-right"></i> Tags</a></li>
+          </ul>
+        </div>
+      </div>
       <div class="footer-bottom">&copy; 2026 I am Nagdev</div>
     </div>
   </footer>

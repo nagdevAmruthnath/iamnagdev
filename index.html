@@ -4,20 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iamnagdev Blog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="site-shell">
         <header class="sidebar-left">
-            <div class="brand-block">
-                <div class="brand-mark">N</div>
-                <h1 class="brand-name">I am Nagdev</h1>
-            </div>
+            <a href="index.html" style="text-decoration:none;display:contents;">
+                <div class="brand-block">
+                    <div class="brand-mark">N</div>
+                    <h1 class="brand-name">I am Nagdev</h1>
+                </div>
+            </a>
             <nav class="primary-nav">
-                <a class="active" href="index.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="tags.html">Tags</a>
-                <a href="games/index.html">Games</a>
+                <a class="active" href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="about.html"><i class="fas fa-user"></i> About</a>
+                <a href="tags.html"><i class="fas fa-tags"></i> Tags</a>
+                <a href="games/index.html"><i class="fas fa-gamepad"></i> Games</a>
             </nav>
         </header>
         <main class="main-content">
@@ -32,23 +35,43 @@
             </header>
             <section class="post-feed">
                 <article class="post-card">
-                    <div class="post-thumb post-thumb-large"></div>
+                    <div class="post-thumb post-thumb-large"><i class="fas fa-chart-line"></i></div>
                     <div class="post-copy">
-                        <div class="post-label">AI & Infrastructure</div>
-                        <h3><a href="posts/reciprocal-intelligence.html">The Reciprocal Intelligence Frontier: Energy Thermodynamics and the Nagdev Law of Density</a></h3>
-                        <div class="post-meta"><span>April 19, 2026</span><span>Research</span><span>15 min read</span></div>
-                        <p>The trajectory of AI has reached a critical inflection point. As the era of brute-force scaling ends due to a fundamental "Thermodynamic Wall," a new principle emerges: the Nagdev Law of Reciprocal Model Density. Explore how intelligence is migrating toward compression, efficiency, and invisible ubiquity.</p>
-                        <a class="post-link" href="posts/reciprocal-intelligence.html">Read More</a>
+                        <div class="post-label"><i class="fas fa-arrow-trend-up"></i> Data Science & AI</div>
+                        <h3><a href="posts/data-mechanics-to-ai-conductors.html">The Shift from "Data Mechanics" to "AI Conductors"</a></h3>
+                        <div class="post-meta"><span><i class="far fa-calendar"></i> 2026</span><span><i class="fas fa-tag"></i> Data Science</span><span><i class="far fa-clock"></i> 8 min read</span></div>
+                        <p>Driven by the explosive maturation of advanced code-generation tools and foundation models, the mechanical barriers of data science have collapsed. The discipline is no longer about syntax and debugging—it's about problem framing, architectural creativity, and stakeholder orchestration.</p>
+                        <a class="post-link" href="posts/data-mechanics-to-ai-conductors.html">Read More <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </article>
                 <article class="post-card">
-                    <div class="post-thumb post-thumb-large"></div>
+                    <div class="post-thumb post-thumb-large"><i class="fas fa-globe-americas"></i></div>
                     <div class="post-copy">
-                        <div class="post-label">Data Science</div>
+                        <div class="post-label"><i class="fas fa-globe"></i> Geopolitics & Infrastructure</div>
+                        <h3><a href="posts/asymmetric-ai-cold-war.html">The Asymmetric AI Cold War: Infrastructure, Energy, and the Battle for Global Adoption</a></h3>
+                        <div class="post-meta"><span><i class="far fa-calendar"></i> 2026</span><span><i class="fas fa-tag"></i> Geopolitical Analysis</span><span><i class="far fa-clock"></i> 12 min read</span></div>
+                        <p>The strategic competition between the United States and China in artificial intelligence has evolved into a systemic geopolitical contest. This analysis examines semiconductor sovereignty, energy infrastructure leverage, and the asymmetric strategies shaping global AI adoption.</p>
+                        <a class="post-link" href="posts/asymmetric-ai-cold-war.html">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                <article class="post-card">
+                    <div class="post-thumb post-thumb-large"><i class="fas fa-brain"></i></div>
+                    <div class="post-copy">
+                        <div class="post-label"><i class="fas fa-brain"></i> AI & Infrastructure</div>
+                        <h3><a href="posts/reciprocal-intelligence.html">The Reciprocal Intelligence Frontier: Energy Thermodynamics and the Nagdev Law of Density</a></h3>
+                        <div class="post-meta"><span><i class="far fa-calendar"></i> April 19, 2026</span><span><i class="fas fa-flask"></i> Research</span><span><i class="far fa-clock"></i> 15 min read</span></div>
+                        <p>The trajectory of AI has reached a critical inflection point. As the era of brute-force scaling ends due to a fundamental "Thermodynamic Wall," a new principle emerges: the Nagdev Law of Reciprocal Model Density. Explore how intelligence is migrating toward compression, efficiency, and invisible ubiquity.</p>
+                        <a class="post-link" href="posts/reciprocal-intelligence.html">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                <article class="post-card">
+                    <div class="post-thumb post-thumb-small"><i class="fas fa-calculator"></i></div>
+                    <div class="post-copy">
+                        <div class="post-label"><i class="fas fa-chart-bar"></i> Data Science</div>
                         <h3><a href="posts/benfords-law.html">Why Benford's Law Reveals Hidden Patterns in Numbers</a></h3>
-                        <div class="post-meta"><span>April 19, 2026</span><span>Research</span><span>5 min read</span></div>
+                        <div class="post-meta"><span><i class="far fa-calendar"></i> April 19, 2026</span><span><i class="fas fa-flask"></i> Research</span><span><i class="far fa-clock"></i> 5 min read</span></div>
                         <p>Benford's Law shows that in many real-world datasets, the digit 1 appears far more often than 9 as the first number. Explore how this counterintuitive rule works and why it is useful for spotting irregularities in accounting, elections, and scientific data.</p>
-                        <a class="post-link" href="posts/benfords-law.html">Read More</a>
+                        <a class="post-link" href="posts/benfords-law.html">Read More <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </article>
             </section>
@@ -59,35 +82,38 @@
         <div class="footer-content">
             <div class="footer-sections">
                 <div class="footer-section">
-                    <h4>Categories</h4>
+                    <h4><i class="fas fa-folder"></i> Categories</h4>
                     <ul>
-                        <li><a href="#">AI & Infrastructure</a></li>
-                        <li><a href="#">Data Science</a></li>
-                        <li><a href="#">Technology</a></li>
-                        <li><a href="#">Research</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> AI & Infrastructure</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Geopolitics</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Data Science</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Technology</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Research</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Recent Posts</h4>
+                    <h4><i class="fas fa-newspaper"></i> Recent Posts</h4>
                     <ul>
-                        <li><a href="posts/reciprocal-intelligence.html">Reciprocal Intelligence Frontier</a></li>
-                        <li><a href="posts/benfords-law.html">Benford's Law Patterns</a></li>
+                        <li><a href="posts/data-mechanics-to-ai-conductors.html"><i class="fas fa-file-lines"></i> Data Mechanics to AI Conductors</a></li>
+                        <li><a href="posts/asymmetric-ai-cold-war.html"><i class="fas fa-file-lines"></i> The Asymmetric AI Cold War</a></li>
+                        <li><a href="posts/reciprocal-intelligence.html"><i class="fas fa-file-lines"></i> Reciprocal Intelligence Frontier</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Quick Links</h4>
+                    <h4><i class="fas fa-link"></i> Quick Links</h4>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="tags.html">Tags</a></li>
-                        <li><a href="games/index.html">Games</a></li>
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> About</a></li>
+                        <li><a href="tags.html"><i class="fas fa-chevron-right"></i> Tags</a></li>
+                        <li><a href="games/index.html"><i class="fas fa-chevron-right"></i> Games</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Tags</h4>
+                    <h4><i class="fas fa-cloud"></i> Tags</h4>
                     <div class="tag-cloud">
                         <a href="#">AI</a>
                         <a href="#">energy</a>
+                        <a href="#">geopolitics</a>
                         <a href="#">math</a>
                         <a href="#">fraud</a>
                         <a href="#">research</a>

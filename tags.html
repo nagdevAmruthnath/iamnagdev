@@ -4,20 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tags - iamnagdev Blog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="site-shell">
         <header class="sidebar-left">
-            <div class="brand-block">
-                <div class="brand-mark">N</div>
-                <h1 class="brand-name">I am Nagdev</h1>
-            </div>
+            <a href="index.html" style="text-decoration:none;display:contents;">
+                <div class="brand-block">
+                    <div class="brand-mark">N</div>
+                    <h1 class="brand-name">I am Nagdev</h1>
+                </div>
+            </a>
             <nav class="primary-nav">
-                <a href="index.html">Home</a>
-                <a href="about.html">About</a>
-                <a class="active" href="tags.html">Tags</a>
-                <a href="games/index.html">Games</a>
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="about.html"><i class="fas fa-user"></i> About</a>
+                <a class="active" href="tags.html"><i class="fas fa-tags"></i> Tags</a>
+                <a href="games/index.html"><i class="fas fa-gamepad"></i> Games</a>
             </nav>
         </header>
         <main class="main-content">
@@ -29,27 +32,51 @@
             </header>
             <section class="post-feed">
                 <article class="post-card">
-                    <div class="post-thumb post-thumb-small"></div>
+                    <div class="post-thumb post-thumb-small"><i class="fas fa-microscope"></i></div>
                     <div class="post-copy">
-                        <p class="post-label">Tag</p>
-                        <h3>Research</h3>
+                        <p class="post-label"><i class="fas fa-tag"></i> Tag</p>
+                        <h3><i class="fas fa-microscope" style="color:var(--color-primary);margin-right:8px;"></i> Research</h3>
                         <p>Find posts on deeper investigations into patterns, data, and how technology helps solve practical problems.</p>
                     </div>
                 </article>
                 <article class="post-card">
-                    <div class="post-thumb post-thumb-large"></div>
+                    <div class="post-thumb post-thumb-large"><i class="fab fa-python"></i></div>
                     <div class="post-copy">
-                        <p class="post-label">Tag</p>
-                        <h3>Python</h3>
+                        <p class="post-label"><i class="fas fa-tag"></i> Tag</p>
+                        <h3><i class="fab fa-python" style="color:var(--color-primary);margin-right:8px;"></i> Python</h3>
                         <p>Articles covering automation, analytics, and programming techniques for Python developers and data professionals.</p>
                     </div>
                 </article>
                 <article class="post-card">
-                    <div class="post-thumb post-thumb-small"></div>
+                    <div class="post-thumb post-thumb-small"><i class="fas fa-chart-line"></i></div>
                     <div class="post-copy">
-                        <p class="post-label">Tag</p>
-                        <h3>Analytics</h3>
+                        <p class="post-label"><i class="fas fa-tag"></i> Tag</p>
+                        <h3><i class="fas fa-chart-line" style="color:var(--color-primary);margin-right:8px;"></i> Analytics</h3>
                         <p>Insights that connect numbers, reporting, and practical analytics workflows for business and technical audiences.</p>
+                    </div>
+                </article>
+                <article class="post-card">
+                    <div class="post-thumb post-thumb-large"><i class="fas fa-globe-americas"></i></div>
+                    <div class="post-copy">
+                        <p class="post-label"><i class="fas fa-tag"></i> Tag</p>
+                        <h3><i class="fas fa-globe-americas" style="color:var(--color-primary);margin-right:8px;"></i> Geopolitics</h3>
+                        <p>Analysis of the strategic competition between nations in AI infrastructure, semiconductor sovereignty, and energy policy.</p>
+                    </div>
+                </article>
+                <article class="post-card">
+                    <div class="post-thumb post-thumb-small"><i class="fas fa-server"></i></div>
+                    <div class="post-copy">
+                        <p class="post-label"><i class="fas fa-tag"></i> Tag</p>
+                        <h3><i class="fas fa-server" style="color:var(--color-primary);margin-right:8px;"></i> Infrastructure</h3>
+                        <p>Exploring the physical and energy infrastructure that underpins modern AI systems and data centers.</p>
+                    </div>
+                </article>
+                <article class="post-card">
+                    <div class="post-thumb post-thumb-large"><i class="fas fa-arrow-trend-up"></i></div>
+                    <div class="post-copy">
+                        <p class="post-label"><i class="fas fa-tag"></i> Tag</p>
+                        <h3><i class="fas fa-arrow-trend-up" style="color:var(--color-primary);margin-right:8px;"></i> Data Science</h3>
+                        <p>The evolving practice of extracting insights from data—from traditional statistics and machine learning to modern AI-augmented workflows and strategic decision intelligence.</p>
                     </div>
                 </article>
             </section>
@@ -60,40 +87,44 @@
         <div class="footer-content">
             <div class="footer-sections">
                 <div class="footer-section">
-                    <h4>Categories</h4>
+                    <h4><i class="fas fa-folder"></i> Categories</h4>
                     <ul>
-                        <li><a href="#">Data Science</a></li>
-                        <li><a href="#">Technology</a></li>
-                        <li><a href="#">Research</a></li>
-                        <li><a href="#">AI & Infrastructure</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Data Science</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Technology</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Research</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> AI & Infrastructure</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Geopolitics</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Recent Posts</h4>
+                    <h4><i class="fas fa-newspaper"></i> Recent Posts</h4>
                     <ul>
-                        <li><a href="posts/reciprocal-intelligence.html">Reciprocal Intelligence Frontier</a></li>
-                        <li><a href="posts/benfords-law.html">Benford's Law Patterns</a></li>
+                        <li><a href="posts/data-mechanics-to-ai-conductors.html"><i class="fas fa-file-lines"></i> Data Mechanics to AI Conductors</a></li>
+                        <li><a href="posts/asymmetric-ai-cold-war.html"><i class="fas fa-file-lines"></i> The Asymmetric AI Cold War</a></li>
+                        <li><a href="posts/reciprocal-intelligence.html"><i class="fas fa-file-lines"></i> Reciprocal Intelligence Frontier</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Quick Links</h4>
+                    <h4><i class="fas fa-link"></i> Quick Links</h4>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="tags.html">Tags</a></li>
-                        <li><a href="games/index.html">Games</a></li>
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> About</a></li>
+                        <li><a href="tags.html"><i class="fas fa-chevron-right"></i> Tags</a></li>
+                        <li><a href="games/index.html"><i class="fas fa-chevron-right"></i> Games</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Popular Tags</h4>
+                    <h4><i class="fas fa-cloud"></i> Popular Tags</h4>
                     <div class="tag-cloud">
                         <a href="#">benford</a>
                         <a href="#">math</a>
                         <a href="#">fraud</a>
                         <a href="#">ai</a>
+                        <a href="#">geopolitics</a>
                         <a href="#">research</a>
                         <a href="#">analytics</a>
                         <a href="#">python</a>
+                        <a href="#">infrastructure</a>
                     </div>
                 </div>
             </div>
